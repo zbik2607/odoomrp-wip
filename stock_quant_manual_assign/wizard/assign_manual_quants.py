@@ -48,6 +48,8 @@ class AssignManualQuants(models.TransientModel):
                 quants.append([line.quant, line.qty])
         self.pool['stock.quant'].quants_reserve(
             self.env.cr, self.env.uid, quants, move, context=self.env.context)
+        if not move.reserved_quant_ids:
+            move.write({'state': 'confirmed'})            
         return {}
 
     @api.model
